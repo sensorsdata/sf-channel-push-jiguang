@@ -130,20 +130,20 @@ public class JiguangClient extends ChannelClient {
         rateLimitSleepIfNecessary(result);
         log.info("finish push process. [task='{}', sendContent={}, response='{}']", pushTask, pushPayload, result);
       } catch (APIRequestException e) {
-        log.warn("jiguang send push with exception. [tasks='{}']", messagingTasks);
+        log.warn("jiguang send push with exception. [tasks='{}']", taskList);
         log.warn("exception", e);
         failReason = e.getErrorMessage();
       } catch (APIConnectionException e) {
-        log.warn("jiguang send push with exception. [tasks='{}']", messagingTasks);
+        log.warn("jiguang send push with exception. [tasks='{}']", taskList);
         log.warn("exception", e);
         failReason = "APIConnectionException";
       } catch (Exception e) {
-        log.error("jiguang send push with exception. [tasks='{}']", messagingTasks);
+        log.error("jiguang send push with exception. [tasks='{}']", taskList);
         log.error("exception", e);
         failReason = e.getMessage();
       }
 
-      for (MessagingTask messagingTask : messagingTasks) {
+      for (MessagingTask messagingTask : taskList) {
         messagingTask.setSuccess(failReason == null);
         messagingTask.setFailReason(failReason);
       }
